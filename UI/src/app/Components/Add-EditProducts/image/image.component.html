@@ -1,0 +1,106 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- <div class="navbar-brand">Course Management Portal</div> -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" (click)="tolist()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="20" fill="currentColor" class="bi bi-search me-2 mb-1" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+              </svg>
+              Search
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#"></a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" (click)="toadd()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="20" fill="currentColor" class="bi bi-journal-text me-2 mb-1" viewBox="0 0 16 16">
+                <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+              </svg>
+              Add/Edit
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<body>
+  <nav class="nav nav-pills nav-fill mt-2 mx-2 mb-2">
+    <button class="nav-link" aria-current="page" (click)="toadd()">Basic Information</button>
+    <button class="nav-link active" (click)="toimage()">Images</button>
+  </nav>
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Add Images Here
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <form [formGroup]="myForm">
+            <label class="mb-2">Upload Images</label><small class="text-danger" *ngIf="myForm.get('image')?.errors?.['required'] || (myForm.get('image')?.untouched && submitted)">*</small>
+            <div class="input-group mb-3">
+              <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" multiple="" name="ImageName" aria-label="Upload" [(ngModel)]="ImageName" (change)="onFileSelected($event); onSelected($event)" formControlName="image">
+              <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04" [disabled]="!isFormValid()" (click)="addImages()" >Upload</button>
+            </div>
+            <div *ngFor="let url of imageUrls">
+              <img [src]="url" alt="preview" height="200" >
+            </div>            
+          </form>  
+  </div>
+  </div>
+  </div>
+  </div>
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Image Name</th>
+        <th scope="col">Images</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of allImages; index as i">
+        <th scope="row">{{i+1}}</th>
+        <td>
+          <div *ngFor="let name of ProductName">
+            <div *ngIf="item.ProductId === name.ProductId">
+          {{name.Title}}
+        </div>
+          </div>
+        </td>
+        <td>{{item.ImageName}}</td>
+        <td>
+          <div class="image-cell" *ngFor="let type of ImageArray">
+            <div *ngIf="item.ImageId === type.ImageId">
+          <img [src]="'assets/' + type.ImageName" alt="preview" height="100" width="200" class="mx-1 img-thumbnail">
+            </div>
+          </div>
+        </td>
+        <td>
+          <button class="btn btn-outline-danger me-2 mb-1" (click)="deleteImages(item)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+              <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+            </svg>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>

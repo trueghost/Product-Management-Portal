@@ -1,0 +1,141 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- <div class="navbar-brand">Course Management Portal</div> -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item">
+            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" (click)="tolist()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="20" fill="currentColor" class="bi bi-search me-2 mb-1" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+              </svg>
+              Search
+            </a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="#"></a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" (click)="toadd()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="20" fill="currentColor" class="bi bi-journal-text me-2 mb-1" viewBox="0 0 16 16">
+                <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+              </svg>
+              Add/Edit
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<body>
+  <nav class="nav nav-pills nav-fill mt-2 mx-2 mb-2">
+    <button class="nav-link active" aria-current="page" (click)="toadd()">Basic Information</button>
+    <button class="nav-link" (click)="toimage()" [disabled]="!apiSuccess">Images</button>
+  </nav>
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Add Basic Information Here
+        </button>
+      </h2>
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body">
+          <form #productsForm="ngForm" [formGroup]="myForm" (ngSubmit)="addDetails(myForm.value)">
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="title" class="form-label">Title</label><small class="text-danger" *ngIf="myForm.get('title')?.errors?.['required'] || (myForm.get('title')?.untouched && submitted)">*</small>
+                <input type="text text-danger" class="form-control" name="Title" [(ngModel)]="Title" required formControlName="title">
+                
+              </div>
+              <div class="mb-3 col">
+                <label for="code" class="form-label">Unique Code</label><small class="text-danger" *ngIf="myForm.get('unc')?.errors?.['required'] || (myForm.get('unc')?.untouched && submitted)">*</small>
+                <input type="text text-danger" class="form-control"  minlength="8" maxlength="8" [(ngModel)]="randomCode"  name="UniqueCode" required [value]="randomCode" formControlName="unc" #myInput>
+                <div *ngIf="!editMode">
+                <div *ngFor="let item of allProducts">
+                  <small *ngIf="item.Uniquecode === randomCode" class="text-danger">Use different Unique Code</small>
+                </div>
+              </div>
+            </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="categoryId" class="form-label">
+                 Category
+                </label><small class="text-danger" *ngIf="myForm.get('dropdown1')?.errors?.['required'] || (myForm.get('dropdown1')?.untouched && submitted)">*</small>
+                <select class="form-control form-select" aria-label="Default select example" name="CategoryId" id="categoryId" [(ngModel)]="CategoryId" required formControlName="dropdown1">
+                  <option [selected]="CategoryId === type.CategoryId" *ngFor="let type of categoryList$ | async" [value]="type.CategoryId">{{type.CategoryName}}</option>
+              </select>
+            </div>
+            <div class="mb-3 col">
+              <label for="subcategoryId" class="form-label">
+               Subcategory
+              </label><small class="text-danger" *ngIf="myForm.get('dropdown2')?.errors?.['required'] || (myForm.get('dropdown2')?.untouched && submitted)">*</small>
+              <select class="form-control form-select" aria-label="Default select example" name="SubCategoryId" id="subcategoryId" [(ngModel)]="SubCategoryId" required formControlName="dropdown2">
+                <option [selected]="SubCategoryId === type.SubCategoryId" *ngFor="let type of subcategoryList$ | async" [value]="type.SubCategoryId" >{{type.SubCategoryName}}</option>
+            </select>
+          </div>
+          </div>
+          <div class="row">
+          <div class="mb-3 col">
+            <label for="short" class="form-label">Short Description</label><small class="text-danger" *ngIf="myForm.get('sho')?.errors?.['required'] || (myForm.get('sho')?.untouched && submitted)">*</small>
+            <textarea class="form-control" id="short" rows="1" name="ShortDescription" [(ngModel)]="ShortDescription" formControlName="sho" required></textarea>
+          </div>
+          <div class="mb-3 col">
+            <label for="description" class="form-label">Description</label><small class="text-danger" *ngIf="myForm.get('desc')?.errors?.['required'] || (myForm.get('desc')?.untouched && submitted)">*</small>
+            <textarea class="form-control" id="desc" rows="3" name="Description" [(ngModel)]="Description" formControlName="desc" required></textarea>
+          </div>
+          </div>
+          <div class="d-grid gap-2 col-1 mt-2">
+            <input class="btn btn-primary" [disabled]="!isUncValid() || !isFormValid()" type="submit" value="{{editMode ? 'Update' : 'Add'}}">
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Title</th>
+        <th scope="col">Unique Code</th>
+        <th scope="col">Category</th>
+        <th scope="col">Subcategory</th>
+        <th scope="col">Short Description</th>
+        <th scope="col">Description</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of allProducts; index as i">
+        <th scope="row">{{i+1}}</th>
+        <td>{{item.Title}}</td>
+        <td>{{item.Uniquecode}}</td>
+        <td>{{categoryDetailsMap.get(item.CategoryId)}}</td>
+        <td>{{subcategoryDetailsMap.get(item.SubCategoryId)}}</td>
+        <td>{{item.ShortDescription}}</td>
+        <td>{{item.Description}}</td>
+        <td>
+          <mat-slide-toggle [(ngModel)]="item.Status" color="warn" (click)="onToggle(item)" name="Status"></mat-slide-toggle>
+        </td>
+        <td>
+          <button class="btn btn-outline-primary me-2 mb-1" type="button" (click)="updateProduct(item.ProductId)"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+          </svg></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>

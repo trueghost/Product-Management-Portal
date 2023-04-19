@@ -1,0 +1,5 @@
+.image-cell {
+  display: inline-block;
+  vertical-align: middle;
+  white-space: nowrap;
+}
